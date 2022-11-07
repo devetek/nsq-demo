@@ -1,0 +1,11 @@
+{
+  "name": "nodejs-nsq-demo",
+  "version": "0.0.1",
+  "description": "NSQ client nodejs tutorial",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nsqjs": "^0.13.0"
+  }
+}
