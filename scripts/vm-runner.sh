@@ -11,7 +11,7 @@ echo "|_|_| |_|_|  \\___/ "
 echo "                   "
 echo "=========================================================================="
 echo "Common Module       : Global Config"
-echo "Repository          : github.com/jovimoura/ecommerce-next"
+echo "Repository          : github.com/creativetimofficial/nextjs-material-kit"
 echo "Creator             : prakasa@devetek.com"
 echo "Full Source Dir     : ."
 echo "=========================================================================="
@@ -26,10 +26,10 @@ printf "\n</GroupedLog>\n"
 printf "\n<GroupedLog>\n"
 printf "Initial setups folder and git head (...)\n"
 if [ ! -d /root/ecommerce-next/.git ]; then
-    git clone https://github.com/jovimoura/ecommerce-next.git
+    git clone https://github.com/creativetimofficial/nextjs-material-kit.git
 fi
 
-cd ecommerce-next
+cd nextjs-material-kit
 printf "\n</GroupedLog>\n"
 
 
@@ -39,7 +39,7 @@ printf "\n</GroupedLog>\n"
 # Description : Install all require local dependencies
 printf "\n<GroupedLog>\n"
 printf "Install local dependencies\n"
-yarn install
+yarn
 printf "\n</GroupedLog>\n"
 
 # Title       : Install Service
@@ -48,7 +48,7 @@ printf "\n</GroupedLog>\n"
 # Description : Install services can execute multiple command, such us (cp config.example .env && yarn build)
 printf "\n<GroupedLog>\n"
 printf "Install services\n"
-yarn run build
+yarn build
 printf "\n</GroupedLog>\n"
 
 echo "KRATOS-FINISHED"
