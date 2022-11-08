@@ -11,7 +11,7 @@ echo "|_|_| |_|_|  \\___/ "
 echo "                   "
 echo "=========================================================================="
 echo "Common Module       : Global Config"
-echo "Repository          : github.com/skipfortoday/next13-tailwind-typescript-starter"
+echo "Repository          : github.com/jovimoura/ecommerce-next"
 echo "Creator             : prakasa@devetek.com"
 echo "Full Source Dir     : ."
 echo "=========================================================================="
@@ -25,9 +25,11 @@ printf "\n</GroupedLog>\n"
 # Description : Git command to handle folder and head condition
 printf "\n<GroupedLog>\n"
 printf "Initial setups folder and git head (...)\n"
-git clone https://github.com/skipfortoday/next13-tailwind-typescript-starter.git
+if [ ! -d /root/ecommerce-next/.git ]; then
+    git clone https://github.com/jovimoura/ecommerce-next.git
+fi
 
-cd next13-tailwind-typescript-starter
+cd ecommerce-next
 printf "\n</GroupedLog>\n"
 
 

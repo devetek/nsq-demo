@@ -1,14 +1,18 @@
 FROM ubuntu:18.04
 
-RUN apt update && apt install openssh-server sudo git -y
+RUN apt-get update && apt-get remove npm nodejs -y && \
+    apt-get remove npm nodejs -y && apt autoremove && \
+    apt install libc6 curl openssh-server sudo git -y
+
 
 RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1000 raka 
 
 RUN  echo 'raka:raka' | chpasswd
 
 # Install NodeJS requirements
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - && \
-    apt-get install nodejs npm curl -y && npm install --global yarn
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash - && \
+    apt-get update && apt-get install nodejs -y && \
+    npm install --global yarn
 
 RUN service ssh start
 
