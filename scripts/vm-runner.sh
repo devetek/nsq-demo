@@ -23,6 +23,7 @@ printf "\n</GroupedLog>\n"
 # Author      : Nedya Prakasa
 # Date        : 02 Dec 2021
 # Description : Git command to handle folder and head condition
+# Example repo failed build https://github.com/jovimoura/ecommerce-next.git
 printf "\n<GroupedLog>\n"
 printf "Initial setups folder and git head (...)\n"
 if [ ! -d /root/ecommerce-next/.git ]; then
