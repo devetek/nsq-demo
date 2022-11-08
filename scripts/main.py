@@ -84,7 +84,7 @@ if __name__ == '__main__':
     print("Server started http://%s:%s" % ("0.0.0.0", 8080))
 
     try:
-        # configure child processes
+        # configure child processes, with only 1 process
         children = [Process(target=task, name="kratos") for _ in range(1)]
         # start child processes
         for child in children:
