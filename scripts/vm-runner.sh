@@ -26,7 +26,7 @@ printf "\n</GroupedLog>\n"
 # Example repo failed build https://github.com/jovimoura/ecommerce-next.git
 printf "\n<GroupedLog>\n"
 printf "Initial setups folder and git head (...)\n"
-if [ ! -d /root/nextjs-material-kit/.git ]; then
+if [ ! -d /root/nextjs-material-kit ]; then
     git clone https://github.com/creativetimofficial/nextjs-material-kit.git
 fi
 
