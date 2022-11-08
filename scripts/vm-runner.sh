@@ -1,30 +1,52 @@
 #!/bin/bash
 
-# Do not create worker like this will never return KRATOS-FINISHED in the end of process
-# while true
-# do
-#   if [ `date +%H` -ge 17 ]; then
-#     exit	# exit script
-#   fi
-#   pwd
-#   echo "keep running"
-#   sleep 5
-# done
+printf "\n<GroupedLog>\n"
+printf "Initial setups (...)\n"
 
-echo "[Progress] Preparing environment ..."
-sleep 2
-echo "[Progress] Cleaning unused code ..."
-sleep 4
-echo "[Progress] Install all dependencies ..."
-sleep 2
-echo "[Progress] Build service ....."
-sleep 3
-echo "[Progress] Packing docker or and debian package ..."
-sleep 1
-echo "[Progress] Upload assets ..."
-sleep 3
-echo "[Progress] Deploy ..."
-sleep 2
-echo "[Progress] Notification ..."
+echo " _        __       "
+echo "(_)_ __  / _| ___  "
+echo "| | '_ \\| |_ / _ \\ "
+echo "| | | | |  _| (_) |"
+echo "|_|_| |_|_|  \\___/ "
+echo "                   "
+echo "=========================================================================="
+echo "Common Module       : Global Config"
+echo "Repository          : github.com/one-aalam/next-starter-kit"
+echo "Creator             : prakasa@devetek.com"
+echo "Full Source Dir     : ."
+echo "=========================================================================="
+echo ""
+printf "\n</GroupedLog>\n"
+
+
+# Title       : Git Command
+# Author      : Nedya Prakasa
+# Date        : 02 Dec 2021
+# Description : Git command to handle folder and head condition
+printf "\n<GroupedLog>\n"
+printf "Initial setups folder and git head (...)\n"
+git clone https://github.com/one-aalam/next-starter-kit.git
+
+cd next-starter-kit
+printf "\n</GroupedLog>\n"
+
+
+# Title       : Install All Local Deps
+# Author      : Nedya Prakasa
+# Date        : 02 Dec 2021
+# Description : Install all require local dependencies
+printf "\n<GroupedLog>\n"
+printf "Install local dependencies\n"
+yarn install
+printf "\n</GroupedLog>\n"
+
+# Title       : Install Service
+# Author      : Nedya Prakasa
+# Date        : 02 Dec 2021
+# Description : Install services can execute multiple command, such us (cp config.example .env && yarn build)
+printf "\n<GroupedLog>\n"
+printf "Install services\n"
+yarn run build
+printf "\n</GroupedLog>\n"
 
 echo "KRATOS-FINISHED"

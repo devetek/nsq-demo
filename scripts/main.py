@@ -40,6 +40,7 @@ def task():
             if output_str != "KRATOS-FINISHED":
                 print(output.strip().decode("utf-8"))
             else:
+                print(output.strip().decode("utf-8"))
                 return_code = 0
 
 # Create Public Endpoint To Communicate With Manager
