@@ -12,7 +12,7 @@ func main() {
 	wg.Add(1)
 
 	decodeConfig := nsq.NewConfig()
-	c, err := nsq.NewConsumer("My_NSQ_Topic", "My_NSQ_Channel", decodeConfig)
+	c, err := nsq.NewConsumer("My_NSQ_Topic", "golang_channel", decodeConfig)
 	if err != nil {
 		log.Panic("Could not create consumer")
 	}

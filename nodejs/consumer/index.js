@@ -1,19 +1,42 @@
-const express = require("express");
+// const express = require("express");
 const nsq = require("nsqjs");
-const app = express();
-const port = 3000;
+// const app = express();
+// const port = 3000;
 
-const reader = new nsq.Reader("My_NSQ_Topic", "My_NSQ_Channel", {
+const reader = new nsq.Reader("My_NSQ_Topic", "nodejs_channel", {
   nsqdTCPAddresses: "127.0.0.1:4150",
 });
 
 reader.connect();
 
+reader.on("ready", () => {
+  console.log(`Awaiting messages from NSQ topic "My NSQ Topic"...`);
+});
+
 reader.on("message", (msg) => {
-  console.log("Received message [%s]: %s", msg.id, msg.body.toString());
+  console.log(
+    "%s Received message [%s]: %s",
+    new Date()
+      .toISOString()
+      .replace(/T/, " ")
+      .replace(/\..+/, "")
+      .replace(/-/g, "/"),
+    msg.id,
+    msg.body.toString()
+  );
   msg.finish();
 });
 
-app.listen(port, () =>
-  console.log(`NSQ Consumer is listening on port ${port}!`)
-);
+reader.on("error", (err) => {
+  if (err) {
+    console.log(err);
+    setInterval(() => {
+      reader.connect();
+    }, 1000);
+  }
+});
+
+// Uncomment to expose nodeJS web server
+// app.listen(port, () =>
+//   console.log(`NSQ Consumer is listening on port ${port}!`)
+// );

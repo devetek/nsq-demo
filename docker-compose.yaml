@@ -1,16 +1,29 @@
 version: '3'
 services:
+  openssh-server:
+    image: prakasa1904/ubuntu-sshserver:latest
+    ports:
+      - 22:22
+    volumes:
+      - ${PWD}/ssh-server/sshd_config:/etc/ssh/sshd_config
+      - ${PWD}/ssh-server/authorized_keys:/root/.ssh/authorized_keys
+    restart: unless-stopped
+
   nsqlookupd:
     image: nsqio/nsq
     command: /nsqlookupd
     ports:
       - "4160:4160"
       - "4161:4161"
+
+  # https://github.com/nsqio/nsq/issues/1375
   nsqd:
     image: nsqio/nsq
-    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160
+    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160 --data-path=/data --mem-queue-size=20
     depends_on:
       - nsqlookupd
+    volumes:
+      - nsqd_data:/data
     ports:
       - "4151:4151"
       - "4150:4150"
@@ -21,3 +34,11 @@ services:
       - nsqlookupd
     ports:
       - "4171:4171"
+
+volumes:
+  nsqd_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/nsqdata
+      o: bind
