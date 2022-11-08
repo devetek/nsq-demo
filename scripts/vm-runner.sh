@@ -11,7 +11,7 @@ echo "|_|_| |_|_|  \\___/ "
 echo "                   "
 echo "=========================================================================="
 echo "Common Module       : Global Config"
-echo "Repository          : github.com/one-aalam/next-starter-kit"
+echo "Repository          : github.com/skipfortoday/next13-tailwind-typescript-starter"
 echo "Creator             : prakasa@devetek.com"
 echo "Full Source Dir     : ."
 echo "=========================================================================="
@@ -25,7 +25,7 @@ printf "\n</GroupedLog>\n"
 # Description : Git command to handle folder and head condition
 printf "\n<GroupedLog>\n"
 printf "Initial setups folder and git head (...)\n"
-git clone https://github.com/one-aalam/next-starter-kit.git
+git clone https://github.com/skipfortoday/next13-tailwind-typescript-starter.git
 
 cd next-starter-kit
 printf "\n</GroupedLog>\n"

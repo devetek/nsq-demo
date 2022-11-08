@@ -14,7 +14,7 @@ if (fs.existsSync(FILE_KEY)) {
   sshClient.connect().then(() => {
     console.log("Connection established");
 
-    sshClient.exec("rm -rf scripts && ls -alh").then((data) => {
+    sshClient.exec("rm -rf scripts").then((data) => {
       console.log("Remove old script contract", data);
 
       // Download VM Script Contract
@@ -37,13 +37,21 @@ if (fs.existsSync(FILE_KEY)) {
           socket.on("end", () => {
             sshClient.spawn("python3 main.py").then((socket) => {
               socket.on("data", (data) => {
-                console.log(data.toString());
+                const strOutput = data.toString();
+
+                if (strOutput.includes("KRATOS-FINISHED")) {
+                  sshClient.exec("curl localhost:8080/kill").then((data) => {
+                    console.log(data);
+                  });
+                } else {
+                  console.log(data.toString());
+                }
               });
 
               socket.stderr.on("data", (data) => {
                 const strOutput = data.toString();
 
-                if (strOutput === "KRATOS-FINISHED") {
+                if (strOutput.includes("KRATOS-FINISHED")) {
                   sshClient.exec("curl localhost:8080/kill").then((data) => {
                     console.log(data);
                   });
