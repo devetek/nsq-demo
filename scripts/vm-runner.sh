@@ -27,7 +27,7 @@ printf "\n<GroupedLog>\n"
 printf "Initial setups folder and git head (...)\n"
 git clone https://github.com/skipfortoday/next13-tailwind-typescript-starter.git
 
-cd next-starter-kit
+cd next13-tailwind-typescript-starter
 printf "\n</GroupedLog>\n"
 
 
