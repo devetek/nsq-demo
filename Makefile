@@ -4,8 +4,12 @@ docker-build-sshserver:
 sshserver:
 	@ssh -i ssh-server/id_rsa_fake root@localhost
 
+
+sshserver-exec:
+	@ssh -i ssh-server/id_rsa_fake root@localhost "python3 main.py"
+
 node-sshclient:
-	@cd nodejs && node ssh-client/index.js
+	@cd nodejs && PROVIDER=virtual-machine ENV=development node providers/virtual-machine.js
 
 
 vm-agent:

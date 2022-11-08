@@ -1,13 +1,13 @@
 import sys
 import json
 import subprocess
+import urllib.request
 from multiprocessing import active_children
 from multiprocessing import Process
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+
 # function to get child process by name
-
-
 def get_process_pid_by_name(name):
     # get all child processes
     processes = active_children()
@@ -20,32 +20,38 @@ def get_process_pid_by_name(name):
     return None
 
 
-def exit_gracefully():
-    print("I'm hit by someone...")
+# function to suicide process
+def suicide():
+    url = 'http://localhost:8080/kill'
+    f = urllib.request.urlopen(url)
+    print(f.read().decode('utf-8'))
+
 
 # function executed in a child process
-
-
 def task():
-    return_code = None
-    process = subprocess.Popen(
-        "./scripts/vm-runner.sh", stdout=subprocess.PIPE)
-    while return_code is None:
-        # print(process.pid)
-        output = process.stdout.readline()
-        if output == '' and process.poll() is not None:
-            break
-        if output:
-            output_str = output.strip().decode("utf-8")
-            if output_str != "KRATOS-FINISHED":
-                print(output.strip().decode("utf-8"))
-            else:
-                print(output.strip().decode("utf-8"))
-                return_code = 0
+    try:
+        return_code = None
+        process = subprocess.run(
+            ('./scripts/vm-runner.sh'), stdout=sys.stdout.buffer, stderr=sys.stdout.buffer)
+
+        if process.returncode != 0:
+            print("[BASH-ERROR] - KRATOS-FINISHED")
+            suicide()
+            return False
+
+        if process.returncode == 0:
+            print("[TASK-SUCCESS] - KRATOS-FINISHED")
+
+        suicide()
+        return True
+    except Exception as e:
+        print("error:", e)
+        print("[TASK-ERROR] - KRATOS-FINISHED")
+        raise
+        suicide()
+
 
 # Create Public Endpoint To Communicate With Manager
-
-
 class HTTPServerVMAgent(BaseHTTPRequestHandler):
     def do_GET(self):
         if self.path == "/api":
@@ -93,6 +99,7 @@ if __name__ == '__main__':
 
         webServer.serve_forever()
     except KeyboardInterrupt:
-        pass
-
-    # webServer.server_close()
+        raise
+    except Exception as e:
+        print("error:", e)
+        raise

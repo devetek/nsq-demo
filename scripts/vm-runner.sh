@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "\n<GroupedLog>\n"
+printf "<GroupedLog>\n"
 printf "Initial setups (...)\n"
 
 echo " _        __       "
@@ -16,7 +16,7 @@ echo "Creator             : prakasa@devetek.com"
 echo "Full Source Dir     : ."
 echo "=========================================================================="
 echo ""
-printf "\n</GroupedLog>\n"
+printf "</GroupedLog>\n"
 
 
 # Title       : Git Command
@@ -26,12 +26,12 @@ printf "\n</GroupedLog>\n"
 # Example repo failed build https://github.com/jovimoura/ecommerce-next.git
 printf "\n<GroupedLog>\n"
 printf "Initial setups folder and git head (...)\n"
-if [ ! -d /root/nextjs-material-kit ]; then
+if [ ! -d nextjs-material-kit ]; then
     git clone https://github.com/creativetimofficial/nextjs-material-kit.git
 fi
 
 cd nextjs-material-kit
-printf "\n</GroupedLog>\n"
+printf "</GroupedLog>\n"
 
 
 # Title       : Install All Local Deps
@@ -41,7 +41,7 @@ printf "\n</GroupedLog>\n"
 printf "\n<GroupedLog>\n"
 printf "Install local dependencies\n"
 yarn
-printf "\n</GroupedLog>\n"
+printf "</GroupedLog>\n"
 
 # Title       : Install Service
 # Author      : Nedya Prakasa
@@ -50,6 +50,7 @@ printf "\n</GroupedLog>\n"
 printf "\n<GroupedLog>\n"
 printf "Install services\n"
 yarn build
-printf "\n</GroupedLog>\n"
+printf "</GroupedLog>\n"
 
-echo "KRATOS-FINISHED"
+# Require String To Exit From Remote Access
+printf "\n[BASH-SUCCESS] - KRATOS-FINISHED\n"
