@@ -4,8 +4,13 @@
   "description": "NSQ client nodejs tutorial",
   "main": "index.js",
   "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "run-vm": "node nodejs/providers/index.js"
+  },
   "dependencies": {
     "express": "^4.18.2",
+    "node-fetch": "^3.2.10",
     "nsqjs": "^0.13.0",
     "ssh2-promise": "^1.0.3"
   }
