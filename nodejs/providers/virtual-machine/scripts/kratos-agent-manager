@@ -153,11 +153,14 @@ if __name__ == '__main__':
 kratos-agent process manager for virtual machine provider
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -rep , --repository   full repository url
-  -fra , --framework    application base framework
-  -pre , --pre-build    pre-build command
-  -pos , --post-build   post-build command
+  -h, --help        show this help message and exit
+  -dev DEVELOPMENT  running in development
+  -cli CLIENT       client running task
+  -rep REPOSITORY   full repository url
+  -dir DIRECTORY    build base directory
+  -fra FRAMEWORK    application base framework
+  -pre PREBUILD     pre-build command
+  -pos POSTBUILD    post-build command
     '''
     parser.add_argument(
         "-dev", dest="development", help="running in development", type=bool, default=False, required=True)
