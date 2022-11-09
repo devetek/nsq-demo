@@ -70,7 +70,7 @@ const vmGetScriptName = (type = "manager") => {
     : `kratos-agent-${type}`;
   const scriptWorkerFileName = DEV_BRANCH
     ? `kratos-agent-${type}-dev`
-    : "kratos-agent-${type}";
+    : `kratos-agent-${type}`;
 
   return type === "manager" ? scriptManagerFileName : scriptWorkerFileName;
 };

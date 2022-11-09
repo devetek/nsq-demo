@@ -41,14 +41,12 @@ def suicide():
 
 # Interval to suicide
 def set_interval(func, sec):
-    print('Checking status...')
     run = True
 
     e = threading.Event()
     while run:
         e.wait(sec)
         suicide = func()
-        print("suicide: ", suicide)
         if "Ok!" in suicide or "Done!" in suicide:
             t.join()
             run = False
@@ -63,8 +61,11 @@ def task(repository, framework, directory, prebuild, postbuild, development, cli
     if directory != ".":
         base_dir = os.path.join(base_dir, directory)
 
+    # Set remote file name destination based on env
+    worker_remote_dest_name = './kratos-agent-worker-dev' if development else './kratos-agent-worker'
+
     # set file target based on running environment
-    worker_file = './nodejs/providers/virtual-machine/scripts/kratos-agent-worker' if development and client != "developer" else './kratos-agent-worker'
+    worker_file = './nodejs/providers/virtual-machine/scripts/kratos-agent-worker' if development and client == "developer" else worker_remote_dest_name
 
     try:
         return_code = None
