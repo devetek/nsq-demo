@@ -1,5 +1,13 @@
 #!/bin/bash
 
+
+repository=$1
+framework=$2
+directory=$3
+prebuild=$4
+postbuild=$5
+
+
 printf "<GroupedLog>\n"
 printf "Initial setups (...)\n"
 
@@ -25,12 +33,12 @@ printf "</GroupedLog>\n"
 # Description : Git command to handle folder and head condition
 # Example repo failed build https://github.com/jovimoura/ecommerce-next.git
 printf "\n<GroupedLog>\n"
-printf "Initial setups folder and git head (...)\n"
-if [ ! -d nextjs-material-kit ]; then
-    git clone https://github.com/creativetimofficial/nextjs-material-kit.git
+printf "Initial setups folder and git head from framework $framework (...)\n"
+if [ ! -d $directory ]; then
+    git clone $repository
 fi
 
-cd nextjs-material-kit
+cd $directory
 printf "</GroupedLog>\n"
 
 
@@ -40,7 +48,7 @@ printf "</GroupedLog>\n"
 # Description : Install all require local dependencies
 printf "\n<GroupedLog>\n"
 printf "Install local dependencies\n"
-yarn
+$prebuild
 printf "</GroupedLog>\n"
 
 # Title       : Install Service
@@ -49,7 +57,7 @@ printf "</GroupedLog>\n"
 # Description : Install services can execute multiple command, such us (cp config.example .env && yarn build)
 printf "\n<GroupedLog>\n"
 printf "Install services\n"
-yarn build
+$postbuild
 printf "</GroupedLog>\n"
 
 # Require String To Exit From Remote Access

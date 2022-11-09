@@ -63,9 +63,17 @@ const vmCmdContractScripts = (branch = DEFAULT_BRANCH) => {
   if (ENV === "development" && DEV_BRANCH === "")
     return `echo "[${ENV}] - Hi developers!"`;
 
-  return `wget -O main.py https://raw.githubusercontent.com/devetek/nsq-demo/${branch}/nodejs/providers/virtual-machine/scripts/vm-runner.sh && \
-wget -O vm-runner.sh https://raw.githubusercontent.com/devetek/nsq-demo/${branch}/nodejs/providers/virtual-machine/scripts/vm-runner.sh && \
-chmod +x vm-runner.sh`;
+  const selectedBranch = DEV_BRANCH || branch;
+  const scriptManagerFileName = DEV_BRANCH
+    ? "kratos-agent-manager-dev"
+    : "kratos-agent-manager";
+  const scriptContractFileName = DEV_BRANCH
+    ? "kratos-agent-worker-dev"
+    : "kratos-agent-worker";
+
+  return `wget -O ${scriptManagerFileName} https://raw.githubusercontent.com/devetek/nsq-demo/${selectedBranch}/nodejs/providers/virtual-machine/scripts/kratos-agent-manager && \
+wget -O ${scriptContractFileName} https://raw.githubusercontent.com/devetek/nsq-demo/${selectedBranch}/nodejs/providers/virtual-machine/scripts/kratos-agent-worker && \
+chmod +x ${scriptContractFileName}`;
 };
 
 export { vmIsWorkerFree, vmGetFreeWorker, vmCmdContractScripts };
