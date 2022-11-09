@@ -1,17 +1,37 @@
-docker-build-sshserver:
+################################################################################
+##@ sshserver development helper
+################################################################################
+docker-sshserver-build:
 	@docker build -f ssh-server/Dockerfile.ssh -t prakasa1904/ubuntu-sshserver:latest .
 
-sshserver:
+docker-sshserver-enter:
 	@ssh -i ssh-server/id_rsa_fake root@localhost
 
 
-sshserver-exec:
+docker-sshserver-exec:
 	@ssh -i ssh-server/id_rsa_fake root@localhost "python3 main.py"
 
-node-sshclient:
-	@cd nodejs && PROVIDER=virtual-machine ENV=development node providers/virtual-machine.js
+################################################################################
+##@ provider manager, script to used to communicate with the provider
+################################################################################
+nodejs-vm:
+	@yarn run-vm
+
+nodejs-ghaction:
+	@echo "Coming Soon....!!"
+
+nodejs-cloudbuild:
+	@echo "Coming Soon....!!"
 
 
-vm-agent:
-	@echo "require python 3.x"
-	@python ./scripts/main.py
+################################################################################
+##@ Script to communicate with provider
+################################################################################
+scripts-vm-agent:
+	@./nodejs/providers/virtual-machine/scripts/kratos-agent-manager -rep=https://github.com/creativetimofficial/nextjs-material-kit.git -fra=skipper-framework -dir=. -pre="yarn" -pos="yarn build" -dev=true -cli=developer
+
+scripts-ghaction:
+	@echo "Coming Soon if need....!!"
+
+scripts-cloudbuild:
+	@echo "Coming Soon if need....!!"

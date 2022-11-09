@@ -7,8 +7,9 @@ services:
     volumes:
       - ${PWD}/ssh-server/sshd_config:/etc/ssh/sshd_config
       - ${PWD}/ssh-server/authorized_keys:/root/.ssh/authorized_keys
-      - ${PWD}/scripts/main.py:/root/main.py
-      - ${PWD}/scripts/vm-runner.sh:/root/scripts/vm-runner.sh
+      # VM based script contract
+      - ${PWD}/nodejs/providers/virtual-machine/scripts/kratos-agent-manager:/root/kratos-agent-manager
+      - ${PWD}/nodejs/providers/virtual-machine/scripts/kratos-agent-worker:/root/kratos-agent-worker
     restart: unless-stopped
 
   nsqlookupd:

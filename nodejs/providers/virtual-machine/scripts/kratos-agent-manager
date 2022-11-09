@@ -1,0 +1,197 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import json
+import time
+import asyncio
+import argparse
+import threading
+import subprocess
+import urllib.request
+from multiprocessing import active_children
+from multiprocessing import Process
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+global_child = []
+
+
+# function to get child process by name
+def get_process_pid_by_name(name):
+    # get all child processes
+    processes = active_children()
+    # return the process with the name
+    for process in processes:
+        # check for match
+        if process.name == name:
+            return process.pid
+    # no match
+    return None
+
+
+# function to suicide process
+def suicide():
+    try:
+        url = 'http://localhost:8080/kill'
+        resp = urllib.request.urlopen(url=url, timeout=5)
+        return resp.read().decode("utf-8")
+    except Exception as e:
+        sys.exit()
+
+
+# Interval to suicide
+def set_interval(func, sec):
+    run = True
+
+    e = threading.Event()
+    while run:
+        e.wait(sec)
+        suicide = func()
+        if "Ok!" in suicide or "Done!" in suicide:
+            t.join()
+            run = False
+
+
+# function executed in a child process
+# add logic or any conditional here, before execute command
+def task(repository, framework, directory, prebuild, postbuild, development, client):
+    base_dir = repository.split("/").pop().replace(".git", "")
+
+    # Setup base directory based on user input
+    if directory != ".":
+        base_dir = os.path.join(base_dir, directory)
+
+    # Set remote file name destination based on env
+    worker_remote_dest_name = './kratos-agent-worker-dev' if development else './kratos-agent-worker'
+
+    # set file target based on running environment
+    worker_file = './nodejs/providers/virtual-machine/scripts/kratos-agent-worker' if development and client == "developer" else worker_remote_dest_name
+
+    try:
+        return_code = None
+        process = subprocess.run(
+            (worker_file, repository, framework, base_dir, prebuild, postbuild), stdout=sys.stdout.buffer, stderr=sys.stdout.buffer)
+
+        if process.returncode != 0:
+            print("[BASH-ERROR] - KRATOS-FINISHED")
+            return False
+
+        if process.returncode == 0:
+            print("[TASK-SUCCESS] - KRATOS-FINISHED")
+
+        return True
+    except Exception as e:
+        print("error:", e)
+        print("[TASK-ERROR] - KRATOS-FINISHED")
+        raise
+
+    # Create Public Endpoint To Communicate With Manager
+
+
+class HTTPServerVMAgent(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == "/api":
+            # get the child process pid by name
+            pid = get_process_pid_by_name('kratos')
+            dictionary = {
+                "process": {
+                    "pid": pid if pid else 0,
+                    "name": "kratos" if pid else "",
+                }
+            }
+            json_object = json.dumps(dictionary)
+
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(bytes(json_object, "utf-8"))
+        elif self.path == "/kill":
+            all_child_killed = False
+            kratos_child_killed = False
+            response = "Ok!"
+            self.send_response(200)
+            self.end_headers()
+            self.send_header("Content-type", "text/html")
+
+            # Kill child process
+            if len(global_child):
+                for child in global_child:
+                    if child.exitcode is not None and child.name == "kratos":
+                        response = "Ok!"
+                        kratos_child_killed = True
+                        for another_child in global_child:
+                            if another_child.name != "kratos":
+                                all_child_killed = True
+                    else:
+                        response = "Wait!"
+
+            if kratos_child_killed and all_child_killed:
+                sys.exit()
+
+            self.wfile.write(bytes(response, "utf-8"))
+        else:
+            self.send_response(403)
+            self.end_headers()
+            self.send_header("Content-type", "text/html")
+            self.wfile.write(bytes("", "utf-8"))
+
+    def log_message(self, format, *args):
+        return
+
+
+# protect the entry point
+if __name__ == '__main__':
+    webServer = HTTPServer(("0.0.0.0", 8080), HTTPServerVMAgent)
+    print("Server started http://%s:%s" % ("0.0.0.0", 8080))
+
+    parser = argparse.ArgumentParser(
+        prog='kratos-vm-agent-manager',
+        description='kratos-agent process manager for virtual machine provider',
+        epilog='For support, please contact @wpe-core')
+
+    '''
+kratos-agent process manager for virtual machine provider
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -rep , --repository   full repository url
+  -fra , --framework    application base framework
+  -pre , --pre-build    pre-build command
+  -pos , --post-build   post-build command
+    '''
+    parser.add_argument(
+        "-dev", dest="development", help="running in development", type=bool, default=False, required=True)
+    parser.add_argument(
+        "-cli", dest="client", help="client running task", type=str, default="kratos", required=False)
+    parser.add_argument(
+        "-rep", dest="repository", help="full repository url", type=str, default="", required=True)
+    parser.add_argument(
+        "-dir", dest="directory", help="build base directory", type=str, default=".", required=False)
+    parser.add_argument(
+        "-fra", dest="framework", help="application base framework", type=str, default="skipper-framework", required=True)
+    parser.add_argument(
+        "-pre", dest="prebuild", help="pre-build command", type=str, default="", required=False)
+    parser.add_argument(
+        "-pos", dest="postbuild", help="post-build command", type=str, default="", required=False)
+
+    args = parser.parse_args(sys.argv[1:])
+
+    try:
+        # configure child processes, with only 1 process
+        children = Process(target=task, name="kratos", args=(
+            args.repository, args.framework, args.directory, args.prebuild, args.postbuild, args.development, args.client))
+        scheduler = Process(target=set_interval,
+                            name="scheduler", args=(suicide, 3))
+        # start child processes
+        children.start()
+        scheduler.start()
+        global_child.append(children)
+        global_child.append(scheduler)
+
+        webServer.serve_forever()
+    except KeyboardInterrupt:
+        raise
+        webServer.server_close()
+    except Exception as e:
+        print("error:", e)
+        raise
