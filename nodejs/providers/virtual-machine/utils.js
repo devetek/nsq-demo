@@ -59,21 +59,41 @@ const vmGetFreeWorker = () => {
   return vmGetFreeWorker();
 };
 
+/**
+ *
+ * @param {string} type pick script to run {manager, worker}, default: manager
+ * @returns script file name
+ */
+const vmGetScriptName = (type = "manager") => {
+  const scriptManagerFileName = DEV_BRANCH
+    ? `kratos-agent-${type}-dev`
+    : `kratos-agent-${type}`;
+  const scriptWorkerFileName = DEV_BRANCH
+    ? `kratos-agent-${type}-dev`
+    : "kratos-agent-${type}";
+
+  return type === "manager" ? scriptManagerFileName : scriptWorkerFileName;
+};
+
 const vmCmdContractScripts = (branch = DEFAULT_BRANCH) => {
   if (ENV === "development" && DEV_BRANCH === "")
     return `echo "[${ENV}] - Hi developers!"`;
 
   const selectedBranch = DEV_BRANCH || branch;
-  const scriptManagerFileName = DEV_BRANCH
-    ? "kratos-agent-manager-dev"
-    : "kratos-agent-manager";
-  const scriptContractFileName = DEV_BRANCH
-    ? "kratos-agent-worker-dev"
-    : "kratos-agent-worker";
 
-  return `wget -O ${scriptManagerFileName} https://raw.githubusercontent.com/devetek/nsq-demo/${selectedBranch}/nodejs/providers/virtual-machine/scripts/kratos-agent-manager && \
-wget -O ${scriptContractFileName} https://raw.githubusercontent.com/devetek/nsq-demo/${selectedBranch}/nodejs/providers/virtual-machine/scripts/kratos-agent-worker && \
-chmod +x ${scriptContractFileName}`;
+  return `wget -O ${vmGetScriptName(
+    "manager"
+  )} https://raw.githubusercontent.com/devetek/nsq-demo/${selectedBranch}/nodejs/providers/virtual-machine/scripts/kratos-agent-manager && \
+  chmod +x ${vmGetScriptName("manager")} && \
+  wget -O ${vmGetScriptName(
+    "worker"
+  )} https://raw.githubusercontent.com/devetek/nsq-demo/${selectedBranch}/nodejs/providers/virtual-machine/scripts/kratos-agent-worker && \
+chmod +x ${vmGetScriptName("worker")}`;
 };
 
-export { vmIsWorkerFree, vmGetFreeWorker, vmCmdContractScripts };
+export {
+  vmIsWorkerFree,
+  vmGetFreeWorker,
+  vmGetScriptName,
+  vmCmdContractScripts,
+};

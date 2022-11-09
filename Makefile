@@ -28,7 +28,7 @@ nodejs-cloudbuild:
 ##@ Script to communicate with provider
 ################################################################################
 scripts-vm-agent:
-	@./nodejs/providers/virtual-machine/scripts/kratos-agent-manager -rep=https://github.com/creativetimofficial/nextjs-material-kit.git -fra=skipper-framework -dir=. -pre="yarn" -pos="yarn build" -dev=true
+	@./nodejs/providers/virtual-machine/scripts/kratos-agent-manager -rep=https://github.com/creativetimofficial/nextjs-material-kit.git -fra=skipper-framework -dir=. -pre="yarn" -pos="yarn build" -dev=true -cli=developer
 
 scripts-ghaction:
 	@echo "Coming Soon if need....!!"

@@ -9,8 +9,13 @@ import {
   PROVIDER,
   VIRTUAL_MACHINE_USERNAME,
   VIRTUAL_MACHINE_SSH_KEY,
+  ISDEV,
 } from "../constants.js";
-import { vmGetFreeWorker, vmCmdContractScripts } from "./utils.js";
+import {
+  vmGetFreeWorker,
+  vmGetScriptName,
+  vmCmdContractScripts,
+} from "./utils.js";
 
 const main = async () => {
   try {
@@ -36,7 +41,9 @@ const main = async () => {
 
       cmdContractFetch.on("end", async () => {
         // Execute contract when success
-        const cmdContractExec = await sshClient.spawn("python3 main.py");
+        const cmdContractExec = await sshClient.spawn(
+          `./${vmGetScriptName()} -rep=https://github.com/creativetimofficial/nextjs-material-kit.git -fra=skipper-framework -dir=. -pre="yarn" -pos="yarn build" -dev=${ISDEV}`
+        );
 
         cmdContractExec.on("data", (data) => {
           const strOutput = data.toString();
