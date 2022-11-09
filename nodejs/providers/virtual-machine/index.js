@@ -42,7 +42,7 @@ const main = async () => {
       cmdContractFetch.on("end", async () => {
         // Execute contract when success
         const cmdContractExec = await sshClient.spawn(
-          `./${vmGetScriptName()} -rep=https://github.com/creativetimofficial/nextjs-material-kit.git -fra=skipper-framework -dir=. -pre="yarn" -pos="yarn build" -dev=${ISDEV}`
+          `./${vmGetScriptName()} -rep=https://github.com/creativetimofficial/nextjs-material-kit.git -fra=skipper-framework -dir=. -pre="yarn" -pos="yarn build" -dev=${ISDEV} -cli=kratos`
         );
 
         cmdContractExec.on("data", (data) => {
