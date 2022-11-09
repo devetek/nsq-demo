@@ -32,7 +32,7 @@ def task():
     try:
         return_code = None
         process = subprocess.run(
-            ('./scripts/vm-runner.sh'), stdout=sys.stdout.buffer, stderr=sys.stdout.buffer)
+            ('./vm-runner.sh'), stdout=sys.stdout.buffer, stderr=sys.stdout.buffer)
 
         if process.returncode != 0:
             print("[BASH-ERROR] - KRATOS-FINISHED")

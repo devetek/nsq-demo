@@ -9,7 +9,7 @@ services:
       - ${PWD}/ssh-server/authorized_keys:/root/.ssh/authorized_keys
       # VM based script contract
       - ${PWD}/nodejs/providers/virtual-machine/scripts/main.py:/root/main.py
-      - ${PWD}/nodejs/providers/virtual-machine/scripts/vm-runner.sh:/root/scripts/vm-runner.sh
+      - ${PWD}/nodejs/providers/virtual-machine/scripts/vm-runner.sh:/root/vm-runner.sh
     restart: unless-stopped
 
   nsqlookupd:

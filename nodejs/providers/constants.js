@@ -1,6 +1,6 @@
 const {
   ENV = "development",
-  DEV_BRANCH = "",
+  DEV_BRANCH = "beta",
   PROVIDER = "virtual-machine",
   DEFAULT_BRANCH = "main",
   /**
