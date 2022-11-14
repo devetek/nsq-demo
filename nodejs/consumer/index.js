@@ -1,5 +1,5 @@
 // const express = require("express");
-const nsq = require("nsqjs");
+import nsq from "nsqjs";
 // const app = express();
 // const port = 3000;
 

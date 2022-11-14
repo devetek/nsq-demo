@@ -1,4 +1,4 @@
-const nsq = require("nsqjs");
+import nsq from "nsqjs";
 
 const w = new nsq.Writer("127.0.0.1", 4150);
 

@@ -6,7 +6,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "run-vm": "node nodejs/providers/index.js"
+    "run-vm": "node nodejs/providers/index.js",
+    "run-consumer": "node nodejs/consumer/index.js",
+    "run-producer": "node nodejs/producer/index.js"
   },
   "dependencies": {
     "express": "^4.18.2",

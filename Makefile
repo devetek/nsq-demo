@@ -23,6 +23,20 @@ nodejs-ghaction:
 nodejs-cloudbuild:
 	@echo "Coming Soon....!!"
 
+################################################################################
+##@ script to running nsq consumer / producer
+################################################################################
+nodejs-nsq-consumer:
+	@yarn run-consumer
+
+nodejs-nsq-producer:
+	@yarn run-producer
+
+golang-nsq-consumer:
+	@go run golang/consumer/consumer.go
+
+golang-nsq-producer:
+	@go run golang/producer/producer.go
 
 ################################################################################
 ##@ Script to communicate with provider
