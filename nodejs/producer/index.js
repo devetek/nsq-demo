@@ -8,12 +8,12 @@ w.on("ready", () => {
   w.deferPublish(
     "My_NSQ_Topic",
     [`NodeJS message gonna arrive 1 sec later at ${new Date().toISOString()}.`],
-    3000000
+    30000
   );
   w.deferPublish(
     "My_NSQ_Topic",
     [`NodeJS message gonna arrive 2 sec later at ${new Date().toISOString()}.`],
-    500000
+    5000
   );
   w.publish(
     "My_NSQ_Topic",

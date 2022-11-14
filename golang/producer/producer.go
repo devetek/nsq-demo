@@ -18,12 +18,12 @@ func main() {
 		log.Panic(err)
 	}
 
-	err = p.DeferredPublish("My_NSQ_Topic", 1000*time.Second, []byte("Golang message gonna arrive 1 sec later at "+time.Now().String()+"."))
+	err = p.DeferredPublish("My_NSQ_Topic", 10*time.Second, []byte("Golang message gonna arrive 1 sec later at "+time.Now().String()+"."))
 	if err != nil {
 		log.Panic(err)
 	}
 
-	err = p.DeferredPublish("My_NSQ_Topic", 3000*time.Second, []byte("Golang message gonna arrive 3 sec later "+time.Now().String()+"."))
+	err = p.DeferredPublish("My_NSQ_Topic", 3*time.Second, []byte("Golang message gonna arrive 3 sec later "+time.Now().String()+"."))
 	if err != nil {
 		log.Panic(err)
 	}
