@@ -3,7 +3,7 @@ import nsq from "nsqjs";
 // const app = express();
 // const port = 3000;
 
-const reader = new nsq.Reader("My_NSQ_Topic", "golang_channel", {
+const reader = new nsq.Reader("My_NSQ_Topic", "nodejs_channel", {
   nsqdTCPAddresses: "127.0.0.1:4150",
 });
 
